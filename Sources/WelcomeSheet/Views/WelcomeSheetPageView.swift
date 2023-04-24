@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WelcomeSheetPageView: View {
+public struct WelcomeSheetPageView: View {
     let page: WelcomeSheetPage
     let restPages: [WelcomeSheetPage]
     let onDismiss: () -> Void
@@ -16,7 +16,14 @@ struct WelcomeSheetPageView: View {
     
     @State private var optionalView: AnyView?
     
-    var body: some View {
+    @Environment(\.presentationMode) var presentationMode
+    public init(page: WelcomeSheetPage, restPages: [WelcomeSheetPage], onDismiss: @escaping () -> Void) {
+        self.page = page
+        self.restPages = restPages
+        self.onDismiss = onDismiss
+    }
+    
+    public var body: some View {
         VStack(spacing: 0) {
             ScrollView {
                 VStack(spacing: iPhoneDimensions.spacing) {
@@ -121,7 +128,7 @@ struct WelcomeSheetPageView: View {
                     .padding(.top)
                 } else {
                     Button {
-                        onDismiss()
+                        presentationMode.wrappedValue.dismiss()
                     } label: {
                         ZStack {
                             page.accentColor ?? Color.accentColor
